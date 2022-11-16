@@ -9,7 +9,7 @@ CFLAGS	=	-Wall -Wextra -Werror
 RM		=	rm -rf
 CC		=	gcc
 
-all: $(SERVER) $(CLIENT)
+all: $(SRV) $(CLT)
 
 $(NAME): all
 
