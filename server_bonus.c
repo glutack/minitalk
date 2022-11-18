@@ -1,17 +1,16 @@
-
 #include <stdlib.h> //exit
 #include <signal.h>
 #include <unistd.h> //getpid, pause, sleep
 #include "./libft/libft.h"
 
 //which data we receive from signals
-static void	get_str(int signal, siginfo_t *clinfo, void *ucontext)
+void	ft_get_str(int signal, siginfo_t *clinfo, void *ucontext)
 {
-	static int 	count;
+	static int	count;
 	static char	ch;
 
 	(void)ucontext;
-	kill(clinfo->si_pid, SIGUSR1)
+	kill(clinfo->si_pid, SIGUSR1);
 	if (!count)
 	{
 		ch = 0;
@@ -24,7 +23,7 @@ static void	get_str(int signal, siginfo_t *clinfo, void *ucontext)
 	{
 		if (ch == 0)
 		{
-			kill(clinfo->si_pid, SIGUSR2)
+			kill(clinfo->si_pid, SIGUSR2);
 			ft_putchar_fd('\n', 1);
 		}
 		else
@@ -35,19 +34,19 @@ static void	get_str(int signal, siginfo_t *clinfo, void *ucontext)
 }
 
 //starts signals
-static void	set_signals(void)
+static void	ft_set_signals(void)
 {
 	struct sigaction	sig;
 
-	sig.sa_sigaction = get_str;
+	sig.sa_sigaction = ft_get_str;
 	sig.sa_flags = SA_SIGINFO;
-	sigaction(SIGUSR1, &get_str, NULL);
-	sigaction(SIGUSR2, &get_str, NULL);
+	sigaction(SIGUSR1, &sig, NULL);
+	sigaction(SIGUSR2, &sig, NULL);
 }
 
 int	main(void)
 {
-	set_signals();
+	ft_set_signals();
 	ft_putstr_fd("Server ON - PID:", 1);
 	ft_putnbr_fd(getpid(), 1);
 	ft_putchar_fd('\n', 1);

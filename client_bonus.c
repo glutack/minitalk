@@ -1,13 +1,21 @@
-
 #include <unistd.h>
 #include <signal.h>
 #include "./libft/libft.h"
 
-static void	send_bit(int pid, char *str)
+static void	ft_chars_sent(int chsent)
+{
+	ft_putstr_fd("Chars sent: ", 1);
+	ft_putnbr_fd((chsent), 1);
+	ft_putchar_fd('\n', 1);
+}
+
+static void	ft_send_bit(int pid, char *str)
 {
 	int	bit;
 	int	ch;
+	int	chsent;
 
+	chsent = 0;
 	bit = 7;
 	while (*str)
 	{
@@ -21,25 +29,26 @@ static void	send_bit(int pid, char *str)
 			bit--;
 		}
 		bit = 7;
-		usleep(800);
+		chsent++;
+		usleep(200);
 	}
+	ft_chars_sent(chsent);
 	bit = 8;
 	while (bit--)
-	{
 		kill(pid, SIGUSR2);
-	}
 }
 
-static void	get_signal(int signal)
+static void	ft_get_signal(int signal)
 {
-	int	bits;
+	static int	bits;
 
 	if (!bits)
 		bits = 0;
 	if (signal == SIGUSR2)
 	{
-		bits -= 8;
-		ft_putnbr_fd(bits, 1);
+		ft_putstr_fd("Chars received: ", 1);
+		ft_putnbr_fd((bits / 8), 1);
+		ft_putchar_fd('\n', 1);
 	}
 	else
 		bits++;
@@ -49,8 +58,8 @@ int	main(int argc, char **argv)
 {
 	if (argc != 3)
 		return (0);
-	signal(SIGUSR1, get_signal);
-	signal(SIGUSR2, get_signal);
-	send_bit(ft_atoi(argv[1]), argv[2]);
+	signal(SIGUSR1, ft_get_signal);
+	signal(SIGUSR2, ft_get_signal);
+	ft_send_bit(ft_atoi(argv[1]), argv[2]);
 	return (0);
 }

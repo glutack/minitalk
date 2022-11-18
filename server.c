@@ -18,13 +18,9 @@
 //which data we receive from signals
 static void	get_str(int signal)
 {
-	static int 	count;
+	static int	count;
 	static char	ch;
 
-	/*if (signal == 	SIGUSR1)
-		ft_putchar_fd('1', 1);
-	if (signal == 	SIGUSR2)
-		ft_putchar_fd('0', 1);*/
 	if (!count)
 	{
 		ch = 0;
