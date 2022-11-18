@@ -12,6 +12,7 @@
 
 #include <unistd.h>
 #include <signal.h>
+#include "./libft/libft.h"
 
 static void	send_bit(int pid, char *str)
 {
@@ -21,17 +22,22 @@ static void	send_bit(int pid, char *str)
 	bit = 7;
 	while (*str)
 	{
-		c = *str++;
+		ch = *str++;
 		while (bit >= 0)
 		{
-			if (c << bit & 1)
+			if (ch >> bit & 1)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
 			bit--;
 		}
 		bit = 7;
-		usleep(200);
+		usleep(800);
+	}
+	bit = 8;
+	while (bit--)
+	{
+		kill(pid, SIGUSR2);
 	}
 }
 

@@ -1,33 +1,35 @@
 NAME	=	minitalk
-SRV	= server
-CLT	= client
-SRC_SRV	=	server.c utils.c
+SRV		= 	server
+CLT		= 	client
+LIBFT	=	./libft/libft.a
+SRC_SRV	=	server.c
 OBJ_SRV	=	$(SRC_SRV:.c=.o)
-SRC_CLT	=	client.c utils.c
+SRC_CLT	=	client.c
 OBJ_CLT	=	$(SRC_CLT:.c=.o)
 CFLAGS	=	-Wall -Wextra -Werror
-RM		=	rm -rf
-CC		=	gcc
 
-all: $(SRV) $(CLT)
+all: $(LIBFT) $(SRV) $(CLT)
+
+$(LIBFT):
+		make -C libft
 
 $(NAME): all
 
 $(SRV): $(OBJ_SRV)
-		@$(CC) $(CFLAGS) $(OBJ_SRV) -o $(SRV)
-		@echo "Server creado"
+		@gcc $(CFLAGS) $(OBJ_SRV) -Llibft -lft -o $(SRV)
+		@echo "Server creado :D"
 
 $(CLT): $(OBJ_CLT)
-		@$(CC) $(CFLAGS) $(OBJ_CLT) -o $(CLT)
-		@echo "Cliente creado"
+		@gcc $(CFLAGS) $(OBJ_CLT) -Llibft -lft -o $(CLT)
+		@echo "Cliente creado :D"
 
-clean: 	@$(RM) $(OBJ_SRV)
-		@$(RM) $(OBJ_CLT)
-
+clean: 	
+		@rm -rf $(OBJ_SRV) $(OBJ_CLT)
+		@echo "Objetos eliminados :D"
 
 fclean: clean
-		@$(RM) $(SRV)
-		@$(RM) $(CLT)
+		@rm -rf $(SRV) $(CLT)
+		@echo "Todo limpito :D"
 
 re: fclean all
 
