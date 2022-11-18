@@ -27,15 +27,18 @@ static void	ft_send_bit(int pid, char *str)
 			else
 				kill(pid, SIGUSR2);
 			bit--;
+			usleep(100);
 		}
 		bit = 7;
 		chsent++;
-		usleep(200);
 	}
 	ft_chars_sent(chsent);
 	bit = 8;
 	while (bit--)
+	{
 		kill(pid, SIGUSR2);
+		usleep(100);
+	}
 }
 
 static void	ft_get_signal(int signal)

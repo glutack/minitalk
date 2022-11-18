@@ -30,14 +30,15 @@ static void	send_bit(int pid, char *str)
 			else
 				kill(pid, SIGUSR2);
 			bit--;
+			usleep(200);
 		}
 		bit = 7;
-		usleep(800);
 	}
 	bit = 8;
 	while (bit--)
 	{
 		kill(pid, SIGUSR2);
+		usleep(200);
 	}
 }
 

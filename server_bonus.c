@@ -11,6 +11,10 @@ void	ft_get_str(int signal, siginfo_t *clinfo, void *ucontext)
 
 	(void)ucontext;
 	kill(clinfo->si_pid, SIGUSR1);
+	if (signal == SIGUSR1)
+		ft_putchar_fd('1', 1);
+	else
+		ft_putchar_fd('0', 1);
 	if (!count)
 	{
 		ch = 0;
@@ -33,7 +37,7 @@ void	ft_get_str(int signal, siginfo_t *clinfo, void *ucontext)
 	}
 }
 
-//starts signals
+/*
 static void	ft_set_signals(void)
 {
 	struct sigaction	sig;
@@ -43,10 +47,15 @@ static void	ft_set_signals(void)
 	sigaction(SIGUSR1, &sig, NULL);
 	sigaction(SIGUSR2, &sig, NULL);
 }
-
+*/
 int	main(void)
 {
-	ft_set_signals();
+	struct sigaction	sig;
+
+	sig.sa_sigaction = ft_get_str;
+	sig.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &sig, NULL);
+	sigaction(SIGUSR2, &sig, NULL);
 	ft_putstr_fd("Server ON - PID:", 1);
 	ft_putnbr_fd(getpid(), 1);
 	ft_putchar_fd('\n', 1);
